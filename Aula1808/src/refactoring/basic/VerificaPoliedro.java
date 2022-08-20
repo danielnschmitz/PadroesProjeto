@@ -4,51 +4,33 @@ import java.util.Scanner;
 
 public class VerificaPoliedro {
 
+	static Scanner scan = new Scanner(System.in);
+
 	static boolean isTetraedro(int numeroArestas, int numeroVertices){
-		if((numeroVertices==4) && (numeroArestas==6)){
-			return true;
-		}else{
-			return false;
-		}
+		return (numeroVertices == 4) && (numeroArestas == 6);
 	}
 
 	static boolean isHexaedro(int numeroArestas, int numeroVertices){
-		if((numeroVertices==8) && (numeroArestas==12)){
-			return true;
-		}else{
-			return false;
-		}
+		return (numeroVertices == 8) && (numeroArestas == 12);
 	}
 
 	static boolean isOctaedro(int numeroArestas, int numeroVertices){
-		if((numeroVertices==6) && (numeroArestas==12)){
-			return true;
-		}else{
-			return false;
-		}
+		return (numeroVertices == 6) && (numeroArestas == 12);
 	}
 
 	static boolean isDodecaedro(int numeroArestas, int numeroVertices){
-		if((numeroVertices==20) && (numeroArestas==30)) {
-			return true;
-		}else{
-			return false;
-		}
+		return (numeroVertices == 20) && (numeroArestas == 30);
 	}
 
 	static boolean isIcosaedro(int numeroArestas, int numeroVertices){
-		if((numeroVertices==12) && (numeroArestas==30)){
-			return true;
-		}else{
-			return false;
-		}
+		return (numeroVertices == 12) && (numeroArestas == 30);
 	}
 
 	static int retornaNumeroFaces(int numeroArestas, int numeroVertices){
 		return 2+numeroArestas-numeroVertices;
 	}
 	
-	static void determinarPoliedro(int numeroArestas, int numeroVertices){
+	static void imprimeResultado(int numeroArestas, int numeroVertices){
 		int numeroFaces;
 
 		numeroFaces = retornaNumeroFaces(numeroArestas,numeroVertices);
@@ -72,24 +54,32 @@ public class VerificaPoliedro {
 			System.out.println("Os dados não indicam nenhum poliedro regular.");
 		}
 	}
-	
-	public static void main(String args[]) {
-		int numeroVertices, numeroArestas;
-		
-		Scanner scan = new Scanner(System.in);
 
+	static int leNumeroVertices(){
+		int numeroVertices;
 		do{
 			System.out.print("Digite o número de vértices do poliedro [4-6-8-12-20]: ");
 			numeroVertices = scan.nextInt();
 		}while(numeroVertices != 4 && numeroVertices != 6 && numeroVertices!= 8 && numeroVertices!= 12 && numeroVertices != 20);
-		
-		System.out.println("");
+		return numeroVertices;
+	}
 
+	static int leNumeroArestas(){
+		int numeroArestas;
 		do {
 			System.out.print("Digite o número de numeroArestas do poliedro [6-12-30]: ");
 			numeroArestas=scan.nextInt();
 		}while( (numeroArestas!=6) && (numeroArestas!=12) && !(numeroArestas==30) );
+		return numeroArestas;
+	}
+	
+	public static void main(String[] args) {
+		int numeroVertices, numeroArestas;
 
-		determinarPoliedro(numeroArestas,numeroVertices);
+		numeroVertices = leNumeroVertices();
+		numeroArestas = leNumeroArestas();
+
+
+		imprimeResultado(numeroArestas,numeroVertices);
 	}
 }
