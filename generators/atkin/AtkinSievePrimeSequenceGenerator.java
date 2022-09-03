@@ -12,6 +12,7 @@ extends AbstractSequenceGenerator
 	private int limit;
 	private List<Integer> primes;
 	private boolean[] sieve;
+	private int testingLimit;
 	
 	//-----------------------------------------------------------
 	private void init(int limit)
@@ -25,8 +26,9 @@ extends AbstractSequenceGenerator
 	//-----------------------------------------------------------
 	private void flipSievePosition(int position)
 	{
-		if(sieve[position])
+		if(sieve[position]) {
 			System.out.println(position);
+		}
 		sieve[position] = !sieve[position];
 	}
 
@@ -42,38 +44,34 @@ extends AbstractSequenceGenerator
 		int sievePosition = value;
 		return sieve[sievePosition];
 	}
-	
-	//-----------------------------------------------------------
-	@Override
-	public List<Integer> generateSequence(final int max)
-	{
-		init( (max < 2) ? 0 : max);
-		if(max < 2)
-			return primes;
-		
-		int testingLimit = (int) (Math.ceil(Math.sqrt(max))); 
-		
+
+	private void defineTestingLimit(){
+		this.testingLimit = (int) (Math.ceil(Math.sqrt(this.limit)));
+	}
+
+	private void sieve(){
 		for (int i=0; i<testingLimit; i++)
 		{
 			for(int j=0; j<testingLimit; j++)
 			{
-				// n = 4*i^2 + j^2
 				int n = 4*i*i + j*j;
-				if (n <= limit && (n % 12 == 1 || n % 12 == 5))				
+				if (n <= limit && (n % 12 == 1 || n % 12 == 5))
 					flipSievePosition(n);
 
 				// n = 3*i^2 + j^2
 				n = 3*i*i + j*j;
-				if (n <= limit && n % 12 == 7)				
-					flipSievePosition(n);				
+				if (n <= limit && n % 12 == 7)
+					flipSievePosition(n);
 
 				// n = 3*i^2 - j^2
 				n = 3*i*i - j*j;
-				if (n <= limit && i > j && n % 12 == 11)					
+				if (n <= limit && i > j && n % 12 == 11)
 					flipSievePosition(n);
 			}
 		}
-		
+	}
+
+	private void markNonPrime(){
 		for (int i=5; i<testingLimit; i++)
 		{
 			if (isPrime(i))
@@ -83,10 +81,12 @@ extends AbstractSequenceGenerator
 				{
 					markSievePositionAsFalse(j);
 				}
-				
+
 			}
 		}
-							
+	}
+
+	private void addPrimes(){
 		primes.add(2);
 		primes.add(3);
 		for(int value=5; value<sieve.length; value++)
@@ -94,7 +94,23 @@ extends AbstractSequenceGenerator
 			if(isPrime(value))
 				primes.add(value);
 		}
-		
+	}
+	
+	//-----------------------------------------------------------
+	@Override
+	public List<Integer> generateSequence(final int max)
+	{
+
+		if(max < 2) {
+			return primes;
+		}
+
+		init(max);
+		defineTestingLimit();
+		sieve();
+		markNonPrime();
+		addPrimes();
+
 		return primes;
 	}
 }

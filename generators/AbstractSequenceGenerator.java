@@ -1,7 +1,5 @@
 package generators;
 
-public abstract class AbstractSequenceGenerator 
-implements ISequenceGenerator
-{
+public abstract class AbstractSequenceGenerator implements ISequenceGenerator {
 
 }
